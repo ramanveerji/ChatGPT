@@ -168,9 +168,9 @@ def get_arkose_token(
     """
     if captcha_supported:
         resp = requests.get(
-            (CAPTCHA_URL + "start?download_images=true")
+            f"{CAPTCHA_URL}start?download_images=true"
             if download_images
-            else CAPTCHA_URL + "start",
+            else f"{CAPTCHA_URL}start"
         )
         resp_json: dict = resp.json()
         if resp.status_code == 200:
@@ -190,7 +190,7 @@ def get_arkose_token(
         index = solver(images, challenge_details)
 
         resp = requests.post(
-            CAPTCHA_URL + "verify",
+            f"{CAPTCHA_URL}verify",
             json={"session": resp_json.get("session"), "index": index},
         )
         if resp.status_code != 200:
@@ -341,7 +341,7 @@ class Chatbot:
             auth.access_token = self.config["access_token"]
             puid = auth.get_puid()
             self.session.headers.update({"PUID": puid})
-            print("Setting PUID (You are a Plus user!): " + puid)
+            print(f"Setting PUID (You are a Plus user!): {puid}")
         except:
             pass
         self.captcha_solver = captcha_solver
